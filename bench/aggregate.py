@@ -15,10 +15,21 @@ from collections import defaultdict
 
 def main(path: str) -> None:
     rows = []
-    with open(path, encoding="utf-8") as fh:
+    # utf-8-sig transparently strips the byte-order mark some Windows
+    # tools write at the start of UTF-8 files; without this DictReader
+    # would read "\ufefftarget" as the first column name.
+    with open(path, encoding="utf-8-sig") as fh:
         reader = csv.DictReader(fh)
         for r in reader:
+            # Skip blank lines that DictReader still surfaces as empty dicts.
+            if not r or "target" not in r or not r["target"]:
+                continue
             rows.append(r)
+
+    if not rows:
+        print("# Benchmark summary\n")
+        print("No rows in raw.csv. Check run.log for errors.")
+        return
 
     targets = sorted({r["target"] for r in rows})
     scenarios = sorted({r["scenario"] for r in rows})

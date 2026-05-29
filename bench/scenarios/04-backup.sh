@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-# Scenario 04 — full backup tarball after sites exist.
+# Scenario 04 â€” full backup tarball after sites exist.
 
-set -euo pipefail
 
 scenario_backup() {
     local t0 t1

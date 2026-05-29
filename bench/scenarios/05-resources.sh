@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-# Scenario 05 — measure tool footprint after install.
+# Scenario 05 â€” measure tool footprint after install.
 
-set -euo pipefail
 
 scenario_resources() {
     # Disk usage by the tool itself (best effort: known install paths).

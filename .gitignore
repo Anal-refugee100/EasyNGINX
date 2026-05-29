@@ -17,3 +17,6 @@ web/.cache-loader/
 *.log
 .env.local
 .env.*.local
+
+# Bench scratch
+bench-debug.log

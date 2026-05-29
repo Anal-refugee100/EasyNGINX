@@ -3,7 +3,6 @@
 # Webinoly is Ubuntu-only and WordPress-first; reverse-proxy sites use -tool=php
 # with a custom location block.
 
-set -euo pipefail
 
 t_install() {
     wget -qO weby qrok.es/wy

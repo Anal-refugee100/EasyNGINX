@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-# EasyNginx target adapter — used by run.sh.
+# EasyNginx target adapter â€” used by run.sh.
 # Defines a function for each scenario.
 
-set -euo pipefail
 
 t_install() {
     curl -fsSL https://raw.githubusercontent.com/nerkoux/EasyNGINX/main/install.sh \

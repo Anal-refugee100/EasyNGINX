@@ -60,52 +60,17 @@ echo "target,scenario,run,wall_seconds,disk_added_kb,rss_added_kb,ok" > "$csv"
 echo "==> building benchmark image: $IMG_TAG"
 docker build -q -t "$IMG_TAG" -f "$ROOT/Dockerfile.ubuntu" "$ROOT" >/dev/null
 
-# Driver script we feed into the container. It sources every scenario
-# and target file from /work and runs them in order, emitting one CSV
-# line per scenario to stdout.
-driver() {
-    cat <<'BASH'
-set -uo pipefail
-
-# shellcheck disable=SC1091
-source "/work/targets/${BENCH_TARGET}.sh"
-
-run_scenario() {
-    local sc="$1"
-    # shellcheck disable=SC1090
-    source "/work/scenarios/${sc}.sh"
-    # Function name is "scenario_<short>" where <short> drops the "NN-"
-    # prefix and replaces "-" with "_".
-    local short fn
-    short="${sc#[0-9][0-9]-}"
-    fn="scenario_${short//-/_}"
-    if declare -F "$fn" >/dev/null; then
-        "$fn"
-    else
-        echo "${BENCH_TARGET},${sc},${BENCH_RUN},0,0,0,0" >&2
-        return 1
-    fi
-}
-
-for sc in 01-install 02-create-site 03-audit 04-backup 05-resources; do
-    run_scenario "$sc"
-done
-BASH
-}
-
 for target in "${TARGETS[@]}"; do
     flags=$(docker_flags_for "$target")
     for run in $(seq 1 "$RUNS"); do
         echo "==> $target / run $run" | tee -a "$log"
-        # Each (target, run) gets its own container. Scenarios run in order,
-        # sharing state — install once, then create site, then audit etc.
-        # Mounted /work is read-only; results stream out via stdout.
+        # Each (target, run) gets its own container. Scenarios are baked
+        # into the image (under /work) by the Dockerfile.
         docker run --rm $flags \
-            -v "$ROOT:/work:ro" \
             -e BENCH_TARGET="$target" \
             -e BENCH_RUN="$run" \
             "$IMG_TAG" \
-            bash -c "$(driver)" \
+            bash /work/driver.sh \
             >> "$csv" 2>>"$log" || {
                 echo "  [warn] container exited non-zero; partial results may be missing" \
                     | tee -a "$log"

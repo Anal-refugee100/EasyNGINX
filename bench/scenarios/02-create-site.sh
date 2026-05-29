@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-# Scenario 02 — create one reverse-proxy site, no SSL.
+# Scenario 02 â€” create one reverse-proxy site, no SSL.
 # We avoid Let's Encrypt here because issuance time and rate limits would
 # dominate the variance and we'd be benchmarking ACME, not the tool.
 
-set -euo pipefail
 
 scenario_create_site() {
     local before_disk

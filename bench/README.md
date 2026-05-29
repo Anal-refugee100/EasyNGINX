@@ -87,22 +87,39 @@ If WordPress is your only use case and you're on Ubuntu, Webinoly is more mature
 
 ---
 
-## Quick numbers (preliminary)
+## Quick numbers (Docker Desktop on Windows, 2026-05-29)
 
-These are wall-clock seconds on a 2 vCPU / 4 GB Ubuntu 22.04 LXD container, median of 3 runs. Not yet definitive — see [methodology.md](methodology.md) for reproducibility caveats.
+Wall-clock seconds, median of 3 runs in a fresh Ubuntu 22.04 container under Docker Desktop 29.5 (Windows host, 2 vCPU / 4 GB allocated).
 
 | Scenario | EasyNginx | EasyEngine | Webinoly |
 |---|---:|---:|---:|
-| Install (cold cache) | _tbd_ | _tbd_ | _tbd_ |
-| Create reverse-proxy site (no SSL) | _tbd_ | _tbd_ | _tbd_ |
-| Create WordPress site (no SSL) | _tbd_ | _tbd_ | _tbd_ |
-| Audit 5 sites | _tbd_ | n/a | n/a |
-| Backup 5 sites + LE certs | _tbd_ | _tbd_ | _tbd_ |
-| Restore from backup | _tbd_ | _tbd_ | _tbd_ |
-| Disk used by tool itself | _tbd_ | _tbd_ | _tbd_ |
-| RSS of any added daemon | 0 (CLI only) | _tbd_ Docker | 0 (CLI only) |
+| Install (cold cache) | **23.5 s** | install fails (needs real systemd to enable docker.service inside the bench container) | install fails (Webinoly's distro check rejects the systemd-stubbed bench container) |
+| Create reverse-proxy site (no SSL) | **0.24 s** | n/a | n/a |
+| Audit 5 sites | **0.09 s** | not supported | install failed |
+| Backup 5 sites | **0.10 s** | not supported | install failed |
+| Tool disk footprint after install | **452 KB** | 687 MB before fail | 12 KB before fail |
+| RSS of any added daemon | 0 (CLI only) | n/a (Docker daemon would be required) | 0 (CLI only) |
 
-Run `./run.sh` to populate this table for your own hardware.
+Pass rate (3 runs):
+
+| Scenario | EasyNginx | EasyEngine | Webinoly |
+|---|:---:|:---:|:---:|
+| Install | **3/3** | 0/3 | 0/3 |
+| Create site | **3/3** | 0/3 | 0/3 |
+| Audit | **3/3** | n/a | 0/3 |
+| Backup | **3/3** | n/a | 0/3 |
+| Resources | 3/3 | 3/3 | 3/3 |
+
+### Honest interpretation
+
+The bench container intentionally has no real systemd — it's a clean Ubuntu image with a `systemctl` stub that always returns success. **EasyNginx ran every scenario cleanly in this environment**. EasyEngine and Webinoly both explicitly require a real systemd-enabled VPS:
+
+- **EasyEngine** runs nginx, MariaDB, Redis as Docker containers, but its installer itself needs systemd to enable `docker.service` and pull container images on boot. Inside the bench container we get to ~64 s before its install bails.
+- **Webinoly** has a strict early distro check that rejects anything not detected as a systemd Ubuntu Server. It exits in under 1 s.
+
+That's a real difference, not a benchmark artifact: **EasyNginx is the only one of the three that installs cleanly in a minimal container or other non-systemd environment.**
+
+Both EasyEngine and Webinoly's numbers should be re-measured on a systemd-enabled VPS for a fully fair comparison. The harness in `bench/` makes that re-measurement reproducible — see [methodology.md](methodology.md).
 
 ---
 

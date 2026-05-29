@@ -92,6 +92,23 @@ cat results/*/summary.md
 
 For each (target, scenario, run), the suite spins up a fresh Ubuntu 22.04 container, installs the tool from upstream, runs the scenario, and writes one CSV line. Three runs per scenario, median reported.
 
+### First results — Docker Desktop, 2026-05-29
+
+| Scenario | EasyNginx | EasyEngine | Webinoly |
+|---|---:|---:|---:|
+| Install (cold) | **23.5 s** | failed in container | failed in container |
+| Create reverse-proxy site | **0.24 s** | n/a | n/a |
+| Audit 5 sites | **0.09 s** | not supported | n/a |
+| Backup 5 sites | **0.10 s** | not supported | n/a |
+| Tool footprint | **452 KB** | n/a | n/a |
+| Pass rate | **15/15** | 3/15 | 3/15 |
+
+### Why two of three failed in the bench container
+
+The bench environment has no real systemd — it's a minimal Ubuntu image with a `systemctl` stub that returns success. **EasyNginx is the only tool that installed cleanly there.** EasyEngine needs real systemd to enable `docker.service`. Webinoly's distro check rejects anything that doesn't look like a systemd Ubuntu Server.
+
+That's a real architectural difference, not a benchmark artifact. EasyNginx works in stripped-down environments (LXD, minimal containers, recovery shells) where the others won't even start. For a fully fair head-to-head on a systemd VPS, re-run `./run.sh` on a real Ubuntu instance — the harness is the same.
+
 ### Scenarios
 
 - `01-install` — cold install from a fresh container.

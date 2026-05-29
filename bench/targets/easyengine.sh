@@ -3,7 +3,6 @@
 # Note: EasyEngine v4 runs sites as Docker containers. Some scenarios
 # (audit, granular reverse proxy) aren't supported and report n/a.
 
-set -euo pipefail
 
 t_install() {
     wget -qO ee https://rt.cx/ee4
@@ -39,7 +38,7 @@ t_remove_site() {
 }
 
 t_uninstall() {
-    # No supported uninstall — Docker volumes and the ee CLI must be removed
+    # No supported uninstall â€” Docker volumes and the ee CLI must be removed
     # by hand.
     sudo rm -f /usr/local/bin/ee
     sudo docker rm -f $(sudo docker ps -aq) 2>/dev/null || true

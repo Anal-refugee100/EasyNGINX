@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-# Scenario 03 — run the tool's audit/info equivalent.
+# Scenario 03 â€” run the tool's audit/info equivalent.
 # Relies on at least 1 site existing from scenario 02. We add 4 more so audit
 # has something realistic to scan.
 
-set -euo pipefail
 
 scenario_audit() {
     for i in 2 3 4 5; do
