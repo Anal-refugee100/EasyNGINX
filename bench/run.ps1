@@ -21,7 +21,7 @@ $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 $AllTargets = @('easynginx', 'easyengine', 'webinoly')
 $Targets    = if ($Target) { @($Target) } else { $AllTargets }
-$ImgTag     = 'easynginx-bench:ubuntu-22.04'
+$ImgTag     = 'easynginx-bench:ubuntu-24.04'
 
 function DockerFlagsFor([string]$t) {
     if ($t -eq 'easyengine') { return @('--privileged') }

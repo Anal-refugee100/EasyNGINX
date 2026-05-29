@@ -4,7 +4,7 @@ The numbers in this suite are only useful if anyone can reproduce them. This fil
 
 ## Environment
 
-Every target runs in an identical, freshly-built Ubuntu 22.04 container:
+Every target runs in an identical, freshly-built Ubuntu 24.04 container:
 
 - 2 vCPU, 4 GB RAM (configurable in `run.sh`)
 - Docker 24+ (rootful)

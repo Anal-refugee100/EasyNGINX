@@ -19,7 +19,7 @@ ROOT="$(cd "$(dirname "$0")" && pwd)"
 TARGETS=(easynginx easyengine webinoly)
 SCENARIOS=(01-install 02-create-site 03-audit 04-backup 05-resources)
 RUNS=3
-IMG_TAG="easynginx-bench:ubuntu-22.04"
+IMG_TAG="easynginx-bench:ubuntu-24.04"
 KEEP=0
 
 usage() { sed -n '2,16p' "$0"; exit 0; }

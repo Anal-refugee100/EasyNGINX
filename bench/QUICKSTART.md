@@ -36,7 +36,7 @@ Wall time: ~25 minutes for the full 3 targets × 3 runs × 5 scenarios on a 2 vC
 
 For each `(target, run)` pair, it:
 
-1. Builds (or reuses) a fresh Ubuntu 22.04 container.
+1. Builds (or reuses) a fresh Ubuntu 24.04 container.
 2. Installs the tool from upstream.
 3. Creates a reverse-proxy site.
 4. Runs the audit equivalent (n/a if the tool doesn't have one).
@@ -87,7 +87,7 @@ You're not in the `docker` group. Run `sudo usermod -aG docker $USER`, then log 
 EasyEngine pulls a Docker daemon inside the bench container. This needs `--privileged`, which `run.sh` already passes. If you see "cannot start dockerd", check that your kernel is recent enough (5.x+) and `cgroups v2` is enabled. Fall back to `./run.sh --target easynginx --target webinoly` to skip EE.
 
 **Webinoly fails with "unsupported distro"**
-Webinoly is strict about Ubuntu version. The image is Ubuntu 22.04 which is supported. If you see this error, Webinoly may have changed their detection logic — file an issue on the EasyNginx repo with the run.log.
+Webinoly's latest stable now requires Ubuntu 24.04. The bench image targets 24.04. If you see this error, ensure your local image is fresh (`docker rmi easynginx-bench:ubuntu-24.04 && ./run.sh`).
 
 **Bench numbers seem too fast / too slow**
 Three runs aren't enough to fully cancel network and apt-cache variance. Use `--runs 5` for tighter medians. Pin your Docker network to a known interface if you have variable upstream connectivity.
